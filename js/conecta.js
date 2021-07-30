@@ -6,21 +6,26 @@
  * the arrow functions does not have scope
  **/
 
-
-
+const filter_elements_no_requered = (element) => {
+  return element.tagName != "BUTTON" && element.tagName != "SPAN"
+    && element.tagName != "DIV" && element.hidden != true;
+};
+const imageElement = document.createElement("IMG");
+const containerImage = document.createElement("FIGURE");
+containerImage.appendChild(imageElement);
+imageElement.setAttribute("style", "max-width: 200px;width: 50%;margin: auto;position: relative;");
+containerImage.setAttribute("class", `image-render`);
 $(document).ready(() => {
   const realfile = document.getElementById("real-file");
   const boton = document.getElementById("addfile");
   const textoboton = document.getElementById("textboton");
   const formulario = document.getElementById("formulario");
   const submit = document.getElementById("submit");
-  const requereds = [...formulario.children]
-    .filter((element) => element.tagName != "BUTTON"
-      && element.tagName != "SPAN"
-      && element.tagName != "DIV"
-      && element.hidden != true)
+  const requereds = [...formulario.children].filter(filter_elements_no_requered);
 
-  let currentImage = String();
+  let currentFile = String();
+  let currentType = String();
+
 
   boton.addEventListener("click", () => realfile.click());
 
@@ -29,7 +34,19 @@ $(document).ready(() => {
     if (realfile.files && realfile.files[0]) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        currentImage = event?.target?.result
+        currentFile = event?.target?.result;
+        currentType = currentFile.split("/").shift().split(":").pop();
+        if (currentType.includes("image"))
+        {
+          imageElement.setAttribute("src", currentFile);
+          containerImage.setAttribute("style", `--src: url(${currentFile});display: initial;`);
+          boton.insertAdjacentElement("afterend", containerImage);
+        }
+        else
+        {
+          containerImage.setAttribute("style", `--src: none;display: none;`);
+        }
+        console.log(currentType);
       };
       reader.readAsDataURL(realfile.files[0]);
     }

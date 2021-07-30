@@ -50,3 +50,22 @@ input[type="file"] {
     }
 }
 
+
+.image-render {
+  content: "";
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.image-render:before {
+  content: "";
+  position: absolute;
+  display: block;
+  height: 100%;
+  width: 100%;
+  background-image: var(--src);
+  background-position: center center;
+  background-size: cover;
+  filter: blur(10px);
+}
