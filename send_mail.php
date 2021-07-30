@@ -15,7 +15,7 @@ class SendMail
 	private $data;
 	private $file;
 	private $boundary;
-	private $subject = 'You have a new message, fromm Planet Embroidery Web Page';
+	private $subject = 'You have a new message, from Planet Embroidery Web Page';
 	private $envio = false;
 
 	function __construct() {
@@ -93,7 +93,16 @@ class SendMail
 			$message .= "\r\n"; // línea vacía
 			$message .= "--=C=T=E=C=\r\n";
 		}
+		$message .= "--> Contact <-----------------------------------\n";
+		$message .= "Name: {$this->data["name"]}\n";
+		$message .= "Email: {$this->data["email"]}\n";
+		$message .= "\n--> Filters <-----------------------------------\n";
+		$message .= "Interest: {$this->data["interest"]}\n";
+		$message .= "Kind: {$this->data["kind"]}\n";
+		$message .= "\n--> Message <-----------------------------------\n";
 		$message .= "{$this->data["note"]}\n";
+		if ($this->file != false)
+			$message .= "\n--> File <-----------------------------------";
 		return $message;
 	}
 
